@@ -7,6 +7,22 @@ import { Sprout, Mail, Lock, User, MapPin, Phone, Globe } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
+type SignUpFormData = {
+  name: string;
+  email: string;
+  password: string;
+  location: string;
+  farm_size: number;
+  phone: string;
+  primary_crops: string[];
+  preferred_language: string;
+};
+
+type SignInFormData = {
+  email: string;
+  password: string;
+};
+
 const signUpSchema = yup.object({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -28,14 +44,14 @@ export default function AuthForm() {
   const { signIn, signUp } = useAuth();
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    watch,
-    setValue
-  } = useForm({
-    resolver: yupResolver(isSignUp ? signUpSchema : signInSchema)
-  });
+  register,
+  handleSubmit,
+  formState: { errors, isSubmitting },
+  watch,
+  setValue
+} = useForm<SignUpFormData | SignInFormData>({
+  resolver: yupResolver(isSignUp ? signUpSchema : signInSchema)
+});
 
   const crops = ['Corn', 'Rice', 'Wheat', 'Tomatoes', 'Potatoes', 'Beans', 'Cassava', 'Sorghum'];
   const languages = [
@@ -113,9 +129,10 @@ export default function AuthForm() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your full name"
                 />
-                {errors.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                {errors.name?.message && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name?.message as string}</p>
                 )}
+
               </div>
 
               <div>
