@@ -84,63 +84,10 @@ npm run dev
 
 ### Weather Updates
 
-```typescript
-import { useRealtimeWeather } from './hooks/useRealtime';
-
-function WeatherComponent() {
-  const { weatherData } = useRealtimeWeather('Nairobi');
-  
-  return (
-    <div>
-      {weatherData.map(weather => (
-        <div key={weather.id}>{weather.description}</div>
-      ))}
-    </div>
-  );
-}
-```
-
 ### Alerts
 
-```typescript
-import { useRealtimeAlerts } from './hooks/useRealtime';
-
-function AlertsComponent() {
-  const { alerts } = useRealtimeAlerts();
-  
-  return (
-    <div>
-      {alerts.map(alert => (
-        <div key={alert.id}>{alert.title}</div>
-      ))}
-    </div>
-  );
-}
-```
 
 ### Broadcasting Custom Events
-
-```typescript
-import { realtimeManager } from './lib/realtime';
-
-// Send real-time weather update
-await realtimeManager.sendWeatherUpdate({
-  location: 'Nairobi',
-  temperature: 25,
-  humidity: 70,
-  // ... other weather data
-});
-
-// Send real-time alert
-await realtimeManager.sendAlert({
-  user_id: 'user-id',
-  type: 'weather',
-  severity: 'high',
-  title: 'Heavy Rain Alert',
-  description: 'Heavy rainfall expected in your area',
-  action_required: 'Protect your crops'
-});
-```
 
 ## Database Schema
 
