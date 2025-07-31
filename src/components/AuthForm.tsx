@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -59,7 +59,8 @@ export default function AuthForm() {
     { code: 'ar', name: 'العربية' }
   ];
 
-  const selectedCrops = watch('primary_crops') || [];
+  const selectedCrops: string[] = watch('primary_crops') || [];
+
 
   const toggleCrop = (crop: string) => {
     const newCrops = selectedCrops.includes(crop)
@@ -84,9 +85,15 @@ export default function AuthForm() {
         await signIn(data.email, data.password);
         toast.success('Welcome back!');
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Authentication failed');
-    }
+    } 
+    catch (error) {
+  if (error instanceof Error) {
+    toast.error(error.message);
+  } else {
+    toast.error('Authentication failed');
+  }
+}
+
   };
 
   return (
