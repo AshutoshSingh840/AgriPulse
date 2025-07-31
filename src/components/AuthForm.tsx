@@ -7,21 +7,17 @@ import { Sprout, Mail, Lock, User, MapPin, Phone, Globe } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
-type SignUpFormData = {
-  name: string;
+type AuthFormData = {
   email: string;
   password: string;
-  location: string;
-  farm_size: number;
-  phone: string;
-  primary_crops: string[];
-  preferred_language: string;
+  name?: string;
+  location?: string;
+  farm_size?: number;
+  phone?: string;
+  primary_crops?: string[];
+  preferred_language?: string;
 };
 
-type SignInFormData = {
-  email: string;
-  password: string;
-};
 
 const signUpSchema = yup.object({
   name: yup.string().required('Name is required'),
@@ -49,7 +45,7 @@ export default function AuthForm() {
   formState: { errors, isSubmitting },
   watch,
   setValue
-} = useForm<SignUpFormData | SignInFormData>({
+} = useForm<AuthFormData>({
   resolver: yupResolver(isSignUp ? signUpSchema : signInSchema)
 });
 
@@ -72,7 +68,7 @@ export default function AuthForm() {
     setValue('primary_crops', newCrops);
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: AuthFormData) => {
     try {
       if (isSignUp) {
         await signUp(data.email, data.password, {
@@ -129,8 +125,8 @@ export default function AuthForm() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your full name"
                 />
-                {errors.name?.message && (
-                  <p className="text-red-500 text-sm mt-1">{errors.name?.message as string}</p>
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
                 )}
 
               </div>
@@ -290,12 +286,6 @@ export default function AuthForm() {
           </motion.button>
         </div>
 
-        {/* Demo Access */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <p className="text-sm text-blue-800 text-center">
-            <strong>Demo Access:</strong> Use any email and password to explore the platform
-          </p>
-        </div>
       </motion.div>
     </div>
   );
